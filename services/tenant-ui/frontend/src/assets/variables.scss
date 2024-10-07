@@ -1,38 +1,59 @@
 // Theme variables
-$tenant-ui-primary-color: #003366; // Main color blocks
+$tenant-ui-primary-color: #10A37F; // Brand color
 $tenant-ui-text-on-primary: #ffffff;
-$tenant-ui-secondary-color: #3c5973; // Buttons, actions
-$tenant-ui-accent-color: #fcba19;
-$tenant-ui-secondary-active: darken( $tenant-ui-secondary-color, 10% );
-$tenant-ui-shadow: lighten( $tenant-ui-secondary-color, 30% );
-$tenant-ui-flat-highlight: #ebeef3;
+$tenant-ui-secondary-color: #0C7F66; // Darker tone for buttons, actions
+$tenant-ui-accent-color: #fcba19; // Accent color (kept the same)
+$tenant-ui-secondary-active: darken($tenant-ui-secondary-color, 10%);
+$tenant-ui-shadow: lighten($tenant-ui-secondary-color, 20%);
+$tenant-ui-flat-highlight: #333333; // Flat highlight for dark theme
 
 // General text colors
-$tenant-ui-text-success: #336C37;
-$tenant-ui-text-danger: #F84949;
-$tenant-ui-text-warning: #cf9605;
-$tenant-ui-link-color: #3a5b8b;
-$tenant-ui-button-link-color: #385A8A;
+$tenant-ui-text-success: #b9e3c3; // Light green text for success
+$tenant-ui-text-danger: #ff6f61; // Light red text for danger
+$tenant-ui-text-warning: #ffd54f; // Light amber text for warnings
+$tenant-ui-link-color: #81d4fa; // Light blue for links
+$tenant-ui-button-link-color: #81d4fa; // Light blue for button links
 
-// Backgrounds/ borders
-$tenant-ui-panel-back-color: #F8F9FA;
-$tenant-ui-panel-border-color: #DEE2E6;
-$tenant-ui-card-info-color: #D7DEE8;
-$tenant-ui-card-info-text-color: #003366;
+// Backgrounds / borders
+$tenant-ui-panel-back-color: #1e1e1e; // Dark panel background
+$tenant-ui-panel-border-color: #424242; // Darker border color
+$tenant-ui-card-info-color: #1e1e1e; // Dark card background
+$tenant-ui-card-info-text-color: #e0e0e0; // Light text on dark background
 
 // Status Colors
-$tenant-ui-status-default-background: #c8c8c8; // status chip backgrounds
-$tenant-ui-status-green-background: #C8E6C9;
-$tenant-ui-status-amber-background: #FFD8B2;
-$tenant-ui-status-red-background: #FFCDD2;
-$tenant-ui-status-blue-background: #BCD7F1;
+$tenant-ui-status-default-background: #333333; // Dark background for status chips
+$tenant-ui-status-green-background: #388e3c; // Darker green for success status
+$tenant-ui-status-amber-background: #ffa726; // Dark amber background
+$tenant-ui-status-red-background: #e57373; // Dark red background
+$tenant-ui-status-blue-background: #64b5f6; // Dark blue background
 
-$tenant-ui-status-default-color: #333333; // status chip text/colours
-$tenant-ui-status-green-color: #336C37;
-$tenant-ui-status-amber-color: #87623D;
-$tenant-ui-status-red-color: #C94040;
-$tenant-ui-status-blue-color: #485773;
+$tenant-ui-status-default-color: #e0e0e0; // Light text on status chips
+$tenant-ui-status-green-color: #b9e3c3; // Light green text for success
+$tenant-ui-status-amber-color: #ffcc80; // Light amber text for warning
+$tenant-ui-status-red-color: #ffcdd2; // Light red text for error
+$tenant-ui-status-blue-color: #bbdefb; // Light blue text for info
 
-// Innkeeper 
-$innkeeper-ui-primary-color: #30403e;
-$innkeeper-ui-text-on-primary: #ffffff; 
+// Innkeeper
+$innkeeper-ui-primary-color: #10A37F; // Brand primary color
+$innkeeper-ui-text-on-primary: #ffffff; // Light text on primary color
+
+/* Custom Dark Theme Variables */
+$brand-color: #10A37F;
+$background-color: #000000;
+$background-secondary: #010101;
+$background-tertiary: #111111;
+$text-color: #ffffff;
+$text-secondary: #eeeeee;
+$card-background: #111111;
+$card-border: #111111;
+$button-background: #111111;
+$button-hover: darken($button-background, 10%);
+$input-background: #111111; // Darker background for inputs
+$input-border: #333333; // Darker border for inputs
+$link-color: lighten($brand-color, 20%);
+$link-hover-color: lighten($link-color, 10%);
+$shadow-color: rgba(0, 0, 0, 0.5);
+$success-color: #4caf50;
+$warning-color: #ffc107;
+$error-color: #f44336;
+$info-color: #2196f3;

@@ -327,9 +327,10 @@ const handleSubmit = async (event: any) => {
   textarea {
     width: 100%;
     border-radius: 5px;
-    border: 1px solid #ced4da;
+    border: 1px solid;
     padding: 0.45rem;
-    color: #495057;
+    color: $text-color;
+    border-color: $background-secondary;
     font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
     font-size: 1rem;
   }
@@ -337,7 +338,7 @@ const handleSubmit = async (event: any) => {
   input:focus,
   textarea:hover,
   textarea:focus {
-    border-color: #2b3f51;
+    border-color: #111111;
   }
   input:focus,
   textarea:focus {

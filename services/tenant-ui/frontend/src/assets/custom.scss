@@ -1,0 +1,154 @@
+/* Global Styles */
+body, html {
+    background-color: $background-color;
+    color: $text-color;
+}
+
+/* Text and Label Styles */
+label, small, .p-error {
+    color: $text-secondary; // Use a lighter gray for labels and small text
+}
+
+/* Input Fields */
+input, .p-inputtext, textarea, .control input, .control textarea {
+    background-color: $input-background; // Retain your existing background color
+    border: 1px solid $input-border; // Retain your existing border color
+    color: $text-color; // Set the text color to white (using $text-color variable)
+    border-radius: 4px;
+    padding: 0.5rem;
+    font-family: Inter, Avenir, Helvetica, Arial, sans-serif; // Consistent font-family
+    font-size: 1rem;
+}
+
+input::placeholder, .p-inputtext::placeholder, textarea::placeholder, 
+.control input::placeholder, .control textarea::placeholder {
+    color: lighten($text-secondary, 20%); // Optional: Lighter color for placeholder text
+    opacity: 0.7; // Slight transparency for placeholder
+}
+
+/* Hover and Focus States */
+input:hover, .p-inputtext:hover, textarea:hover, .control input:hover, .control textarea:hover,
+input:focus, .p-inputtext:focus, textarea:focus, .control input:focus, .control textarea:focus {
+    border-color: $brand-color; // Use brand color on hover and focus
+}
+
+input:focus, .p-inputtext:focus, textarea:focus, .control input:focus, .control textarea:focus {
+    box-shadow: 0 0 0.3rem 0.1rem $brand-color; // Add a subtle brand color shadow
+}
+
+input:focus-visible, .p-inputtext:focus-visible, textarea:focus-visible, 
+.control input:focus-visible, .control textarea:focus-visible {
+    outline: none;
+}
+
+/* Error Styling */
+.error {
+    font-weight: 200;
+    color: $error-color; // Use the error color from custom.scss
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+}
+
+input.highlight, .control input.highlight {
+    border-color: $error-color; // Highlight border with error color
+}
+
+/* Tab Container */
+.tab-container::v-deep(.p-tabview-nav-link) {
+    background-color: $background-color; // Dark background for tab headers
+    color: $text-secondary; // Text color for inactive tabs
+}
+
+/* Active Tab */
+.tab-container::v-deep(.p-tabview-nav-link.p-highlight) {
+    background-color: darken($background-color, 10%);
+    color: $text-color; // White color for active tab text
+}
+
+/* Buttons */
+button, .p-button {
+    background-color: $brand-color; // Set the button background to brand color if needed
+    border: 2px solid $brand-color; // Use brand color for the button border
+    color: $text-color; // Ensure text color is consistent
+    border-radius: 4px; // Optional: adjust the border-radius to match design
+
+    &:hover {
+        background-color: darken($brand-color, 5%); // Slightly darker on hover for effect
+        border-color: darken($brand-color, 5%); // Match border on hover
+    }
+
+    &:focus {
+        box-shadow: 0 0 0 0.2rem rgba(16, 163, 127, 0.5); // Optional: subtle box-shadow for focus
+        outline: none; // Remove default outline
+    }
+}
+
+/* Link Colors */
+a {
+    color: $link-color;
+    &:hover {
+        color: $link-hover-color;
+        text-decoration: underline;
+    }
+}
+
+/* Panel and Card Backgrounds */
+.panel, .card, .p-card {
+    background-color: $card-background; // Dark background for cards and panels
+    border: 1px solid $card-border; // Border color for cards and panels
+}
+
+/* TabView Component Overrides */
+.p-tabview .p-tabview-nav {
+    background-color: $background-color !important; // Dark gray background for TabView
+    border: 1px solid $background-secondary !important; // Border for TabView
+}
+
+.p-tabview .p-tabview-nav-link {
+    background-color: $background-secondary !important; // Background for inactive tabs
+    color: $text-secondary !important; // Text color for inactive tabs
+}
+
+.p-tabview .p-tabview-nav-link.p-highlight {
+    background-color: darken($background-secondary, 10%) !important; // Darker background for active tab
+    color: $text-color !important; // White text for active tab
+}
+
+.p-tabview .p-tabview-panels {
+    background-color: $background-secondary !important; // Background for panel content
+    border: 1px solid $background-secondary !important; // Border to match the dark theme
+}
+
+/* Toast Messages */
+.toast {
+    background-color: $background-secondary;
+    border: 1px solid $card-border;
+    color: $text-color;
+}
+
+/* Error Message Styling */
+.error-message, .p-message-error {
+    background-color: $background-tertiary; // Darker background for error messages
+    border-left: 4px solid $error-color; // Use the error color for the left border
+    color: $error-color; // Use the error color for text
+    padding: 1rem;
+    border-radius: 4px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+}
+
+.error-message .p-message-icon, .p-message-error .p-message-icon {
+    color: $error-color; // Ensure icon uses the error color
+    margin-right: 0.5rem;
+}
+
+/* Update hover and focus states if needed */
+.error-message:hover, .p-message-error:hover {
+    background-color: darken($background-secondary, 5%); // Slightly darker on hover
+}
+
+.error-message:focus, .p-message-error:focus {
+    outline: none;
+    box-shadow: 0 0 0 0.2rem rgba(244, 67, 54, 0.5); // Optional: subtle box-shadow for focus state
+}

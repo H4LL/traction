@@ -18,7 +18,10 @@ button {
   }
   &.p-button-rounded,
   &.p-button-text {
-    color: $tenant-ui-secondary-color !important;
+    color: $text-color !important;
+    background-color: $tenant-ui-secondary-color;
+    border-color: $tenant-ui-secondary-color !important;
+
     > .p-button-label {
       font-weight: normal;
     }
