@@ -168,7 +168,7 @@ body {
 // Header Layout Styling
 .traction-header {
   &.p-toolbar {
-    background-color: white !important;
+    background-color: $background-secondary !important;
     border-radius: 0 !important;
   }
 }
@@ -266,3 +266,318 @@ body {
   transition: width 0.2s ease-in-out;
   transition: min-width 0.2s ease-in-out;
 }
+
+
+
+
+
+
+// General Application Layout
+body, html, .layout-container, .layout-page, .layout-header, .layout-content, .traction-sidebar, .traction-header {
+  background-color: $background-color !important; // Set the main background color
+  color: $text-color !important; // Ensure text is readable against dark background
+}
+
+// Layout Sidebar Styles
+.layout-sidebar {
+  background-color: $background-secondary !important; // Sidebar background to match secondary color
+  border-right: 1px solid $card-border !important; // Sidebar border to separate from content
+  color: $text-color !important; // Sidebar text color
+  transition: width 0.2s ease-in-out, min-width 0.2s ease-in-out; // Smooth transitions for sidebar
+
+  /* Sidebar Header */
+  .sidebar-app-title {
+    background-color: $brand-color !important; // Set header background to brand color
+    color: $text-color !important; // Header text color
+    font-weight: bold; // Emphasize header text
+  }
+
+  /* Sidebar Menu Items */
+  .p-menuitem, .p-panelmenu-panel, .p-submenu-list {
+    background-color: $background-secondary !important; // Background for menu items
+    color: $text-secondary !important; // Text color for menu items
+    border: none !important; // Remove borders from menu items
+
+    &:hover {
+      background-color: darken($background-secondary, 5%) !important; // Darker background on hover
+      color: $text-color !important; // Text color for hover state
+    }
+  }
+
+  /* Active Sidebar Items */
+  .p-menuitem-active {
+    background-color: $brand-color !important; // Active item background to brand color
+    color: $text-color !important; // Text color for active item
+    border-left: 4px solid $text-color !important; // Left border to highlight active item
+  }
+  
+  /* Sidebar Icons */
+  .p-menuitem-icon {
+    color: $text-color !important; // Sidebar icon color
+    font-size: 1.3em !important; // Increase icon size
+  }
+
+  /* Submenu Icons */
+  .p-submenu-icon {
+    margin-left: auto;
+    color: $text-secondary !important; // Submenu icons color
+    font-size: 1.1em !important; // Slightly smaller submenu icons
+  }
+}
+
+// Header Styling
+.traction-header, .layout-header {
+  background-color: $background-secondary !important; // Set header background to secondary
+  border-bottom: 1px solid $card-border !important; // Border at the bottom for separation
+  color: $text-color !important; // Text color for header
+}
+
+// Layout Content Area Styling
+.layout-content {
+  background-color: $background-color !important; // Set content area background to primary color
+  padding: 1rem !important; // Add consistent padding
+  border-radius: 4px; // Slightly rounded corners for smoother look
+
+  /* Card Container */
+  .p-card {
+    background-color: $card-background !important; // Background for cards
+    border: 1px solid $card-border !important; // Border around cards
+    color: $text-color !important; // Text color for cards
+    border-radius: 4px; // Rounded corners for cards
+  }
+
+  /* Card Body */
+  .p-card-body {
+    padding: 1rem; // Padding for card body
+  }
+}
+
+// Button Styling
+button, .p-button {
+  background-color: $button-background !important; // Button background color
+  border: 1px solid $button-hover !important; // Button border color
+  color: $text-color !important; // Text color for buttons
+
+  &:hover {
+    background-color: lighten($button-background, 10%) !important; // Lighten button background on hover
+    border-color: lighten($button-hover, 10%) !important; // Lighten border on hover
+    color: $text-secondary !important; // Lighten text color on hover
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 0.2rem rgba(16, 163, 127, 0.5) !important; // Subtle shadow for focus state
+    outline: none; // Remove default outline
+  }
+}
+
+// TabView Component Styling
+.p-tabview .p-tabview-nav {
+  background-color: $background-secondary !important; // Background for TabView navigation
+  border: 1px solid $card-border !important; // Border around TabView navigation
+  color: $text-secondary !important; // Text color for inactive tabs
+}
+
+.p-tabview .p-tabview-nav-link {
+  background-color: $background-color !important; // Background for tab links
+  color: $text-secondary !important; // Text color for inactive tabs
+
+  &:hover {
+    background-color: darken($background-secondary, 5%) !important; // Darker background on hover
+    color: $text-color !important; // Lighten text color on hover
+  }
+}
+
+.p-tabview .p-tabview-nav-link.p-highlight {
+  background-color: $brand-color !important; // Brand color for active tab
+  color: $text-color !important; // Text color for active tab
+}
+
+.p-tabview .p-tabview-panels {
+  background-color: $background-secondary !important; // Background for panel content
+  border: 1px solid $card-border !important; // Border to match the dark theme
+}
+
+// Empty State Message
+.p-datatable-tbody .p-row-empty {
+  background-color: darken($background-secondary, 5%) !important; // Background for empty rows
+  color: lighten($text-secondary, 15%) !important; // Slightly lighter text color for empty state
+  font-style: italic; // Italicize empty state message
+  text-align: center; // Center align the empty state message
+  padding: 2rem; // Increase padding for visual comfort
+}
+
+// Table Row Styling
+.p-datatable-tbody .p-row {
+  background-color: $background-secondary !important; // Background for rows
+  border-bottom: 1px solid $card-border !important; // Border between rows
+  color: $text-color !important; // Text color for rows
+
+  &:hover {
+    background-color: darken($background-secondary, 5%) !important; // Slightly darker on hover
+    color: $text-secondary !important; // Text color on hover
+  }
+}
+
+
+
+
+
+// Revised Theme Variables and General Styles
+$sidebar-background: #111111;
+$sidebar-active-background: #10A37F; // Match active items with the brand color
+$sidebar-border: #333333;
+$sidebar-hover-background: darken($sidebar-background, 10%);
+$sidebar-text-color: #ffffff;
+$sidebar-text-hover-color: lighten($sidebar-text-color, 10%);
+$header-background: $sidebar-background;
+$header-border-bottom: #333333;
+$table-background: $background-color;
+$table-border: $card-border;
+$empty-state-color: $text-secondary;
+$empty-state-background: darken($background-color, 5%);
+
+// Override Sidebar Styles
+.layout-sidebar {
+  background-color: $sidebar-background !important;
+  border-right: 1px solid $sidebar-border !important;
+  color: $sidebar-text-color !important;
+
+  // Sidebar header styling
+  .sidebar-app-title {
+    background-color: $brand-color !important;
+    color: $sidebar-text-color !important;
+    padding: 0.75rem !important; // Adjust padding for spacing
+    font-size: 1.2rem; // Slightly larger font size for title
+  }
+
+  // Sidebar menu items
+  .p-menuitem {
+    background-color: $sidebar-background !important;
+    color: $sidebar-text-color !important;
+    padding: 0.75rem 1.5rem; // Consistent padding for menu items
+    border-bottom: 1px solid $sidebar-border !important; // Divider between items
+
+    &:hover {
+      background-color: $sidebar-hover-background !important;
+      color: $sidebar-text-hover-color !important;
+      border-left: 4px solid $sidebar-active-background !important; // Brand color border on hover
+    }
+  }
+
+  // Active sidebar items
+  .p-menuitem-active {
+    background-color: $sidebar-active-background !important; // Brand color for active item
+    color: $sidebar-text-color !important;
+    border-left: 4px solid $sidebar-active-background !important; // Brand color left border
+  }
+
+  // Sidebar icons
+  .p-menuitem-icon {
+    color: $sidebar-text-color !important;
+    font-size: 1.2rem !important; // Slightly larger icons
+  }
+
+  // Submenu icons
+  .p-submenu-icon {
+    color: $sidebar-text-hover-color !important;
+  }
+}
+
+// Header Styles
+.layout-header {
+  background-color: $header-background !important;
+  border-bottom: 1px solid $header-border-bottom !important;
+  color: $sidebar-text-color !important;
+
+  // Header title and icons
+  .header-title {
+    font-size: 1.5rem !important;
+    font-weight: bold !important;
+  }
+
+  .header-icon {
+    color: $sidebar-text-color !important;
+  }
+}
+
+// Content Area Styles
+.layout-content {
+  background-color: $table-background !important;
+  padding: 1rem !important; // Add consistent padding
+  border-radius: 4px !important; // Rounded corners for smoother look
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); // Subtle shadow for content area
+}
+
+// Table and Card Styles
+.p-card, .p-datatable {
+  background-color: $table-background !important;
+  border: 1px solid $table-border !important;
+  color: $text-color !important;
+  border-radius: 4px !important; // Rounded corners for tables and cards
+
+  // Table headers
+  .p-datatable-thead {
+    background-color: darken($table-background, 5%) !important;
+    color: $text-secondary !important;
+    border-bottom: 1px solid $table-border !important;
+  }
+
+  // Empty state styling
+  .p-row-empty {
+    background-color: $empty-state-background !important;
+    color: $empty-state-color !important;
+    font-style: italic !important;
+  }
+}
+
+// Button Styling
+button, .p-button {
+  background-color: $button-background !important;
+  border: 1px solid $button-hover !important;
+  color: $text-color !important;
+  border-radius: 4px !important;
+
+  &:hover {
+    background-color: lighten($button-background, 10%) !important;
+    border-color: lighten($button-hover, 10%) !important;
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 0.2rem rgba(16, 163, 127, 0.5) !important; // Subtle shadow for focus
+    outline: none !important;
+  }
+}
+
+// TabView Component Styling
+.p-tabview .p-tabview-nav {
+  background-color: $background-secondary !important;
+  border: 1px solid $card-border !important;
+  color: $text-secondary !important;
+}
+
+.p-tabview .p-tabview-nav-link {
+  background-color: $background-secondary !important;
+  color: $text-secondary !important;
+
+  &:hover {
+    background-color: darken($background-secondary, 5%) !important;
+  }
+}
+
+.p-tabview .p-tabview-nav-link.p-highlight {
+  background-color: $brand-color !important;
+  color: $text-color !important;
+}
+
+.p-tabview .p-tabview-panels {
+  background-color: $background-secondary !important;
+  border: 1px solid $card-border !important;
+}
+
+// Apply Consistent Background and Borders to the Entire Layout
+body, html, .layout-container, .traction-sidebar, .layout-page {
+  background-color: $background-color !important;
+  color: $text-color !important;
+  border: 1px solid $table-border !important; // Consistent border color throughout
+}
+

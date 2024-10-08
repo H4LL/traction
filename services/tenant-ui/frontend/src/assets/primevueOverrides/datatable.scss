@@ -35,13 +35,13 @@
     background-color: $tenant-ui-panel-back-color !important;
     &,
     .p-sortable-column-icon {
-      color: black !important;
+      color: $background-color !important;
     }
   }
 
   // Paginator in table footer (more other general paginator tweaks below)
   .p-paginator {
-    background-color: white;
+    background-color: $background-tertiary;
     border: none;
     display: flex;
     justify-content: flex-start;
