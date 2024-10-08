@@ -2,12 +2,12 @@
   <div class="traction-login grid w-screen flex-grow-1 mt-0">
     <div class="col-12 md:col-6 xl:col-4">
       <div class="px-8">
-        <div class="pt-4 pb-6">
-          <img src="/img/bc/bc_logo.png" class="logo-bc" />
+        <div class="pt-8 pb-6">
+          <img src="/img/xanadu/logo.svg" class="logo-bc" />
 
           <img
             src="/img/logo/traction-logo-bc-text.svg"
-            class="logo-traction"
+            class="logo-traction pt-4"
           />
         </div>
 
@@ -168,6 +168,9 @@ const doGoBack = () => {
 // See layout.scss for generalized common login layout stuff
 // Set the image specific to this component here though
 .cover-image {
-  background-image: url('/img/default-login-image.jpg');
+  background-image: url('/img/login-image.jpg');
+  background-repeat: no-repeat;
+  background-size: auto 100%; // Scale to height while maintaining aspect ratio
+  background-position: center;
 }
 </style>

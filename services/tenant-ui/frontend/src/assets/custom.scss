@@ -1,4 +1,24 @@
-/* Global Styles */
+/* Custom Dark Theme Overrides */
+$brand-color: #10A37F;
+$background-color: #000000;
+$background-secondary: #111111;
+$text-color: #ffffff;
+$text-secondary: #eeeeee;
+$card-background: #111111;
+$card-border: #111111;
+$button-background: #111111;
+$button-hover: darken($button-background, 10%);
+$input-background: #111111; // Darker background for inputs
+$input-border: #333333; // Darker border for inputs
+$link-color: lighten($brand-color, 20%);
+$link-hover-color: lighten($link-color, 10%);
+$shadow-color: rgba(0, 0, 0, 0.5);
+$success-color: #4caf50;
+$warning-color: #ffc107;
+$error-color: #f44336;
+$info-color: #2196f3;
+
+/* General Text Colors */
 body, html {
     background-color: $background-color;
     color: $text-color;
@@ -10,47 +30,19 @@ label, small, .p-error {
 }
 
 /* Input Fields */
-input, .p-inputtext, textarea, .control input, .control textarea {
-    background-color: $input-background; // Retain your existing background color
-    border: 1px solid $input-border; // Retain your existing border color
-    color: $text-color; // Set the text color to white (using $text-color variable)
+input, .p-inputtext {
+    background-color: $input-background;
+    border: 1px solid $input-border;
+    border-color: #111111;
+    color: $text-color;
     border-radius: 4px;
     padding: 0.5rem;
-    font-family: Inter, Avenir, Helvetica, Arial, sans-serif; // Consistent font-family
-    font-size: 1rem;
 }
 
-input::placeholder, .p-inputtext::placeholder, textarea::placeholder, 
-.control input::placeholder, .control textarea::placeholder {
-    color: lighten($text-secondary, 20%); // Optional: Lighter color for placeholder text
-    opacity: 0.7; // Slight transparency for placeholder
-}
-
-/* Hover and Focus States */
-input:hover, .p-inputtext:hover, textarea:hover, .control input:hover, .control textarea:hover,
-input:focus, .p-inputtext:focus, textarea:focus, .control input:focus, .control textarea:focus {
-    border-color: $brand-color; // Use brand color on hover and focus
-}
-
-input:focus, .p-inputtext:focus, textarea:focus, .control input:focus, .control textarea:focus {
-    box-shadow: 0 0 0.3rem 0.1rem $brand-color; // Add a subtle brand color shadow
-}
-
-input:focus-visible, .p-inputtext:focus-visible, textarea:focus-visible, 
-.control input:focus-visible, .control textarea:focus-visible {
-    outline: none;
-}
-
-/* Error Styling */
-.error {
-    font-weight: 200;
-    color: $error-color; // Use the error color from custom.scss
-    margin-bottom: 0.5rem;
-    font-size: 0.9rem;
-}
-
-input.highlight, .control input.highlight {
-    border-color: $error-color; // Highlight border with error color
+input:focus, .p-inputtext:focus {
+    border-color: #111111;
+    border-color: $brand-color;  // Keep brand color for focus
+    box-shadow: 0 0 5px $brand-color;  // Add shadow to indicate focus
 }
 
 /* Tab Container */
@@ -67,19 +59,12 @@ input.highlight, .control input.highlight {
 
 /* Buttons */
 button, .p-button {
-    background-color: $brand-color; // Set the button background to brand color if needed
-    border: 2px solid $brand-color; // Use brand color for the button border
-    color: $text-color; // Ensure text color is consistent
-    border-radius: 4px; // Optional: adjust the border-radius to match design
-
+    background-color: $background-color; // Darker button background
+    border: 1px solid $background-color; // Slightly lighter border for contrast
+    color: $text-color;
     &:hover {
-        background-color: darken($brand-color, 5%); // Slightly darker on hover for effect
-        border-color: darken($brand-color, 5%); // Match border on hover
-    }
-
-    &:focus {
-        box-shadow: 0 0 0 0.2rem rgba(16, 163, 127, 0.5); // Optional: subtle box-shadow for focus
-        outline: none; // Remove default outline
+        background-color: darken(#3a4a4d, 0%);
+        border-color: $brand-color;
     }
 }
 
@@ -94,61 +79,54 @@ a {
 
 /* Panel and Card Backgrounds */
 .panel, .card, .p-card {
-    background-color: $card-background; // Dark background for cards and panels
-    border: 1px solid $card-border; // Border color for cards and panels
+    background-color: $background-color; // Dark background for cards and panels
+    border: 1px solid $card-border;
 }
 
 /* TabView Component Overrides */
 .p-tabview .p-tabview-nav {
     background-color: $background-color !important; // Dark gray background for TabView
-    border: 1px solid $background-secondary !important; // Border for TabView
+    border: 1px solid $background-color !important; // Darker border color for TabView
 }
 
 .p-tabview .p-tabview-nav-link {
-    background-color: $background-secondary !important; // Background for inactive tabs
+    background-color: $background-color !important; // Match tab links background with TabView
     color: $text-secondary !important; // Text color for inactive tabs
 }
 
 .p-tabview .p-tabview-nav-link.p-highlight {
-    background-color: darken($background-secondary, 10%) !important; // Darker background for active tab
+    background-color: darken($background-color, 10%) !important; // Darker background for active tab
     color: $text-color !important; // White text for active tab
 }
 
 .p-tabview .p-tabview-panels {
-    background-color: $background-secondary !important; // Background for panel content
-    border: 1px solid $background-secondary !important; // Border to match the dark theme
+    background-color: $background-color !important; // Background for panel content
+    border: 1px solid $background-color !important; // Border to match the dark theme
 }
 
 /* Toast Messages */
 .toast {
-    background-color: $background-secondary;
+    background-color: $background-color;
     border: 1px solid $card-border;
     color: $text-color;
 }
-
-/* Error Message Styling */
-.error-message, .p-message-error {
-    background-color: $background-tertiary; // Darker background for error messages
-    border-left: 4px solid $error-color; // Use the error color for the left border
-    color: $error-color; // Use the error color for text
-    padding: 1rem;
-    border-radius: 4px;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-}
-
-.error-message .p-message-icon, .p-message-error .p-message-icon {
-    color: $error-color; // Ensure icon uses the error color
-    margin-right: 0.5rem;
-}
-
-/* Update hover and focus states if needed */
-.error-message:hover, .p-message-error:hover {
-    background-color: darken($background-secondary, 5%); // Slightly darker on hover
-}
-
-.error-message:focus, .p-message-error:focus {
-    outline: none;
-    box-shadow: 0 0 0 0.2rem rgba(244, 67, 54, 0.5); // Optional: subtle box-shadow for focus state
-}
+textarea {
+    background-color: $input-background !important; // Match input background with dark theme
+    border: 1px solid $input-border !important; // Match border color for consistency
+    color: $text-color !important; // Match text color
+    border-radius: 4px; // Rounded corners for uniformity
+    padding: 0.5rem !important; // Same padding as other input fields
+    font-family: Inter, Avenir, Helvetica, Arial, sans-serif; // Consistent font family
+    font-size: 1rem; // Uniform font size
+  
+    &:focus {
+      border-color: $brand-color !important; // Use brand color for focus border
+      box-shadow: 0 0 5px $brand-color !important; // Subtle shadow effect on focus
+      outline: none !important; // Remove default outline
+    }
+  
+    &::placeholder {
+      color: $grey-placeholder !important; // Match placeholder color
+      opacity: 0.7; // Slight transparency for placeholder text
+    }
+  }

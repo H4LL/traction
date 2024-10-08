@@ -41,7 +41,7 @@ $innkeeper-ui-text-on-primary: #ffffff; // Light text on primary color
 $brand-color: #10A37F;
 $background-color: #000000;
 $background-secondary: #010101;
-$background-tertiary: #111111;
+$background-tertiary: #222222;
 $text-color: #ffffff;
 $text-secondary: #eeeeee;
 $card-background: #111111;
@@ -57,3 +57,12 @@ $success-color: #4caf50;
 $warning-color: #ffc107;
 $error-color: #f44336;
 $info-color: #2196f3;
+
+/* Define Grey Shades */
+$grey-jet-black: #1a1a1a; // Darkest grey, close to jet black for backgrounds and major elements
+$grey-dark: #2c2c2c;      // Darker grey for components and input fields
+$grey-medium: #3e3e3e;    // Medium grey for borders, lines, and accents
+$grey-light: #5e5e5e;     // Lighter grey for subtle contrasts and secondary elements
+$grey-text: #d3d3d3;      // Soft grey text color for readability
+$grey-placeholder: #7e7e7e; // Placeholder color for input fields
+$grey-border: #4e4e4e;    // Border color for components
