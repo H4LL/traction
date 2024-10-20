@@ -452,7 +452,7 @@ $empty-state-background: darken($background-color, 5%);
 
   // Sidebar menu items
   .p-menuitem {
-    background-color: $sidebar-background !important;
+    // background-color: $sidebar-background !important;
     color: $sidebar-text-color !important;
     padding: 0.75rem 1.5rem; // Consistent padding for menu items
     border-bottom: 1px solid $sidebar-border !important; // Divider between items

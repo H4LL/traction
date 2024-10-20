@@ -153,7 +153,7 @@ textarea {
     /* Table Header Styling */
     .p-datatable-thead {
       background-color: darken($background-color, 10%) !important; // Darker background for table headers
-      color: $text-secondary !important; // Use secondary text color for headers
+      color: $text-color !important; // Use secondary text color for headers
       border-bottom: 2px solid $card-border !important; // Stronger bottom border for separation
       font-weight: bold !important; // Bold text for headers
     }
@@ -226,6 +226,8 @@ textarea {
         background-color: darken($background-color, 10%) !important; // Darker background on hover
         border-color: $brand-color !important; // Use brand color border on hover
       }
+
+      
     }
   }
 
@@ -614,7 +616,7 @@ $dark-shadow: rgba(0, 0, 0, 0.5);
   // Sidebar hover and active state adjustments
   .p-menuitem {
     &:hover {
-      background-color: $dark-hover-color !important;
+      // background-color: $dark-hover-color !important;
       border-left: 3px solid $brand-color !important; // Brand color border on hover
     }
   }
@@ -663,4 +665,59 @@ button, .p-button {
   background-color: $dark-background-dark !important; // Dark background for layout
   color: $dark-text-light !important; // Text color for layout
   border: 1px solid $dark-border-color !important; // Consistent border color
+}
+
+/* Overwrite PrimeVue datatable header styles */
+.p-datatable .p-datatable-thead > tr > th {
+ /* Make font weight normal */
+  color: #fff !important;      /* Change text color to black */
+}
+
+.p-datatable .p-datatable-header {
+
+  background-color: #000000;
+
+}
+.p-datatable .p-datatable-thead {
+  background-color: #000000;
+}
+
+.p-datatable .p-datatable-header, .p-datatable .p-datatable-wrapper .p-datatable-thead > tr > th {
+
+  background-color: #000000;
+
+
+}
+
+.p-paginator .p-link.p-highlight {
+
+  background-color: #2c2c2c;
+}
+
+.p-accordion .p-accordion-header:not(.p-disabled).p-highlight .p-accordion-header-link {
+
+  background-color: #111;
+}
+
+.p-accordion .p-accordion-header:not(.p-disabled).p-highlight:hover .p-accordion-header-link {
+
+  background-color: #2c2c2c;
+}
+
+.p-accordion .p-accordion-content {
+
+  background-color: #000000;
+}
+
+.p-accordion .p-accordion-header .p-accordion-header-link {
+
+  background-color: #000000;
+}
+
+a {
+  color: $brand-color;
+}
+
+.p-card-content {
+  background-color: #000000;
 }

@@ -53,15 +53,15 @@
       {{ config.image.buildtime }}
     </div>
 
-    <div class="col-2">
+    <!-- <div class="col-2">
       {{ $t('about.traction.repository') }}
-    </div>
-    <div class="col-10">
-      <!-- eslint-disable-next-line @intlify/vue-i18n/no-raw-text -->
-      <a href="https://github.com/bcgov/traction" target="_blank">
+    </div> -->
+    <!-- <div class="col-10"> -->
+    <!-- eslint-disable-next-line @intlify/vue-i18n/no-raw-text -->
+    <!-- <a href="https://github.com/bcgov/traction" target="_blank">
         https://github.com/bcgov/traction
       </a>
-    </div>
+    </div> -->
   </div>
 </template>
 

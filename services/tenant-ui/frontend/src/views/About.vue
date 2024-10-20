@@ -1,7 +1,7 @@
 <template>
   <MainCardContent :title="$t('about.about')">
     <Accordion :multiple="true">
-      <AccordionTab
+      <!-- <AccordionTab
         v-if="
           config.frontend.ux.aboutBusiness &&
           config.frontend.ux.aboutBusiness.title
@@ -9,7 +9,7 @@
         :header="config.frontend.ux.aboutBusiness.title"
       >
         <Business />
-      </AccordionTab>
+      </AccordionTab> -->
       <AccordionTab header="Traction">
         <Traction />
       </AccordionTab>
@@ -29,7 +29,7 @@ import { storeToRefs } from 'pinia';
 import { useConfigStore } from '@/store/configStore';
 // Components
 import Acapy from '@/components/about/Acapy.vue';
-import Business from '@/components/about/Business.vue';
+// import Business from '@/components/about/Business.vue';
 import MainCardContent from '@/components/layout/mainCard/MainCardContent.vue';
 import Traction from '@/components/about/Traction.vue';
 
