@@ -626,7 +626,7 @@ ui:
     ##
     aboutBusiness:
       ## @param ui.ux.aboutBusiness.title
-      title: "Government of British Columbia"
+      title: "Xanadu ID"
       ## @param ui.ux.aboutBusiness.linkTitle
       linkTitle: "BC Digital Trust Service Agreement"
       ## @param ui.ux.aboutBusiness.link

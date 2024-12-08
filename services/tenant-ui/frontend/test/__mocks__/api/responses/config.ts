@@ -14,14 +14,13 @@ const config = {
       label: 'IDIR',
     },
     ux: {
-      appTitle: 'Traction Tenant Console',
-      appInnkeeperTitle: 'Traction Innkeeper Console',
+      appTitle: 'Xanadu ID Tenant Console',
+      appInnkeeperTitle: 'Xanadu ID Innkeeper Console',
       sidebarTitle: 'TRACTION',
       copyright: '',
       owner: '',
-      coverImageCopyright: 'Photo by Kristoffer Fredriksson on StockSnap',
       aboutBusiness: {
-        title: 'Government of British Columbia',
+        title: 'Xanadu ID',
         linkTitle: 'BC Digital Trust Service Agreement',
         link: 'https://github.com/bcgov/bc-vcpedia/blob/main/agents/bc-gov-agent-service.md',
         imageUrl: '/img/bc/bc_logo.png',

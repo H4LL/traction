@@ -29,7 +29,7 @@
 
     <div class="cover-image hidden md:block col-0 md:col-6 xl:col-8 p-0">
       <!-- eslint-disable-next-line @intlify/vue-i18n/no-raw-text -->
-      <span class="copyright">Photo by Julia Volk on StockSnap</span>
+      <span class="copyright"></span>
     </div>
   </div>
   <SessionTimeoutModal />
