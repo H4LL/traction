@@ -2,7 +2,7 @@
 $tenant-ui-primary-color: #10A37F; // Brand color
 $tenant-ui-text-on-primary: #ffffff;
 $tenant-ui-secondary-color: #0C7F66; // Darker tone for buttons, actions
-$tenant-ui-accent-color: #fcba19; // Accent color (kept the same)
+$tenant-ui-accent-color: #10A37F; // Accent color (kept the same)
 $tenant-ui-secondary-active: darken($tenant-ui-secondary-color, 10%);
 $tenant-ui-shadow: lighten($tenant-ui-secondary-color, 20%);
 $tenant-ui-flat-highlight: #333333; // Flat highlight for dark theme
@@ -11,7 +11,7 @@ $tenant-ui-flat-highlight: #333333; // Flat highlight for dark theme
 $tenant-ui-text-success: #b9e3c3; // Light green text for success
 $tenant-ui-text-danger: #ff6f61; // Light red text for danger
 $tenant-ui-text-warning: #ffd54f; // Light amber text for warnings
-$tenant-ui-link-color: #81d4fa; // Light blue for links
+$tenant-ui-link-color: #0C7F66; // Light blue for links
 $tenant-ui-button-link-color: #81d4fa; // Light blue for button links
 
 // Backgrounds / borders
