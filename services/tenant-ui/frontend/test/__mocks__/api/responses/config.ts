@@ -24,7 +24,7 @@ const config = {
         title: 'Government of British Columbia',
         linkTitle: 'BC Digital Trust Service Agreement',
         link: 'https://github.com/bcgov/bc-vcpedia/blob/main/agents/bc-gov-agent-service.md',
-        imageUrl: '/img/bc/bc_logo.png',
+        imageUrl: '/img/xanadu/logo.svg',
       },
     },
   },

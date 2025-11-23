@@ -1,4 +1,4 @@
-@import 'variables.scss';
+@use 'variables.scss' as *; // Import variables as global
 
 // General application layout and styles for the 'containing' components (nav, content, etc)
 
@@ -34,12 +34,12 @@ body {
   }
 
   .layout-header {
-    background-color: white;
+    // background-color: white;
   }
 
   .layout-content {
     flex: 1;
-    background-color: #e4e4e4;
+    // background-color: #e4e4e4;
     padding: 0.5em;
 
     // The card container for pages

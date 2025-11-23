@@ -28,6 +28,12 @@ export default defineConfig({
   },
   server: {
     proxy: {
+      '/logStream': {
+        target: 'ws://localhost:8080',
+        ws: true,
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/logStream/, ''),
+      },
       '/api': proxyObject,
       '/config': proxyObject,
     },
@@ -35,7 +41,7 @@ export default defineConfig({
   css: {
     preprocessorOptions: {
       scss: {
-        additionalData: `@import "@/assets/variables.scss";`,
+        additionalData: `@use "@/assets/variables.scss" as *;`,
         api: 'modern-compiler',
       },
     },
