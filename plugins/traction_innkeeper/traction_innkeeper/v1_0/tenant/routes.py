@@ -1,7 +1,6 @@
 import logging
 
 from aiohttp import web
-from aiohttp.web_middlewares import middleware
 from aiohttp_apispec import (
     docs,
     match_info_schema,
@@ -23,7 +22,6 @@ from acapy_agent.wallet.models.wallet_record import (
     WalletRecordSchema,
     WalletRecord,
 )
-from acapy_agent.admin import server
 from acapy_agent.admin.decorators.auth import tenant_authentication
 from marshmallow import fields, validate
 
@@ -52,17 +50,21 @@ SWAGGER_CATEGORY = "traction-tenant"
 
 class CustomUpdateWalletRequestSchema(UpdateWalletRequestSchema):
     image_url = fields.Str(
-        description="Image url for this wallet. This image url is publicized\
+        metadata={
+            "description": "Image url for this wallet. This image url is publicized\
             (self-attested) to other agents as part of forming a connection.",
-        example="https://aries.ca/images/sample.png",
+            "example": "https://aries.ca/images/sample.png",
+        },
         validate=validate.URL(),
     )
 
 
 class UpdateContactRequestSchema(OpenAPISchema):
     contact_email = fields.Str(
-        description="The new email to associate with this tenant.",
-        example="example@exampleserver.com",
+        metadata={
+            "description": "The new email to associate with this tenant.",
+            "example": "example@exampleserver.com",
+        },
         validate=validate.Email(),
     )
 
@@ -72,14 +74,16 @@ class TenantApiKeyRequestSchema(OpenAPISchema):
 
     alias = fields.Str(
         required=True,
-        description="Alias/label",
-        example="API key for my Tenant",
+        metadata={
+            "description": "Alias/label",
+            "example": "API key for my Tenant",
+        },
     )
 
 
 class TenantLedgerIdConfigSchema(OpenAPISchema):
     ledger_id = fields.Str(
-        description="Ledger identifier",
+        metadata={"description": "Ledger identifier"},
         required=True,
     )
 
@@ -506,7 +510,7 @@ async def tenant_delete_soft(request: web.BaseRequest):
                 {"success": f"Tenant {rec.tenant_id} soft deleted."}
             )
         else:
-            raise web.HTTPNotFound(reason=f"Tenant not found.")
+            raise web.HTTPNotFound(reason="Tenant not found.")
 
 
 @docs(

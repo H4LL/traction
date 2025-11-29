@@ -14,13 +14,12 @@ on:
 jobs:
   uninstall:
     name: Uninstall PR
-    environment: development
     runs-on: ubuntu-22.04
     if: github.repository_owner == 'bcgov'
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Check out manifest repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           ssh-key: ${{ secrets.MANIFEST_REPO_DEPLOY_KEY }}
           repository: ${{ secrets.MANIFEST_REPO }}
@@ -31,7 +30,6 @@ jobs:
         with:
           openshift_server_url: ${{ secrets.OPENSHIFT_SERVER }}
           openshift_token: ${{ secrets.OPENSHIFT_TOKEN }}
-          certificate_authority_data: ${{ secrets.OPENSHIFT_CA_CRT }}
           namespace: ${{ secrets.OPENSHIFT_NAMESPACE }}
 
       - name: Uninstall Traction via Helm
@@ -50,7 +48,7 @@ jobs:
     name: Delete closed PR images
     steps:
       - name: Delete Images
-        uses: snok/container-retention-policy@v3.0.0
+        uses: snok/container-retention-policy@v3.0.1
         with:
           account: bcgov
           image-names: traction-plugins-acapy, traction-tenant-proxy, traction-tenant-ui
