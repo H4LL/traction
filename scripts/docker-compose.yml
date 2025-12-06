@@ -82,6 +82,11 @@ services:
       - ACAPY_CREATE_REVOCATION_TRANSACTIONS=${ACAPY_CREATE_REVOCATION_TRANSACTIONS}
       - ACAPY_DEBUG_WEBHOOKS=${ACAPY_DEBUG_WEBHOOKS}
       - ACAPY_PLUGIN_CONFIG=${ACAPY_PLUGIN_CONFIG}
+      # cheqd configuration environment variables
+      - CHEQD_REGISTRAR_INTERNAL_URL=${CHEQD_REGISTRAR_INTERNAL_URL}
+      - TRACTION_INNKEEPER_TENANT_ID=${TRACTION_INNKEEPER_TENANT_ID}
+      - TRACTION_INNKEEPER_WALLET_NAME=${TRACTION_INNKEEPER_WALLET_NAME}
+      - TRACTION_INNKEEPER_WALLET_KEY=${TRACTION_INNKEEPER_WALLET_KEY}
       - RUST_LOG=error
     # Ports removed - access via tenant-proxy only
     entrypoint: /bin/bash
@@ -138,6 +143,7 @@ services:
       - UX_COPYRIGHT=${UX_COPYRIGHT}
       - UX_OWNER=${UX_OWNER}
       - FRONTEND_QUICK_CONNECT_ENDORSER_NAME=${FRONTEND_QUICK_CONNECT_ENDORSER_NAME}
+      - CHEQD_NETWORK=${CHEQD_NETWORK}
       - SERVER_SMTP_SERVER=maildev
       - SERVER_SMTP_PORT=1025
     ports:
@@ -159,8 +165,6 @@ services:
     depends_on:
       traction-agent:
         condition: service_started
-      did-registrar:
-        condition: service_started
     restart: unless-stopped
     environment:
       - ACAPY_ADMIN_URL=${TRACTION_ACAPY_ADMIN_URL}
@@ -172,16 +176,19 @@ services:
     extra_hosts:
       - host.docker.internal:host-gateway
 
-  # cheqd DID Services
+  # Simple cheqd registrar proxy for local network
   did-registrar:
-    image: ghcr.io/cheqd/did-registrar:production-latest
-    platform: linux/amd64
+    image: node:18-alpine
+    working_dir: /app
+    command: ["node", "cheqd-proxy.js"]
     ports:
-      - "9089:3000"
+      - "${CHEQD_REGISTRAR_PORT}:${CHEQD_REGISTRAR_PORT}"
     restart: on-failure
     environment:
-      - FEE_PAYER_TESTNET_MNEMONIC=${FEE_PAYER_TESTNET_MNEMONIC:-"abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon art"}
-      - FEE_PAYER_MAINNET_MNEMONIC=${FEE_PAYER_MAINNET_MNEMONIC:-"abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon art"}
+      - CHEQD_REGISTRAR_PORT=${CHEQD_REGISTRAR_PORT}
+      - CHEQD_REST_ENDPOINT=${CHEQD_REST_ENDPOINT}
+    volumes:
+      - "./cheqd-proxy.js:/app/cheqd-proxy.js:ro"
     networks:
       - traction-network
     extra_hosts:
@@ -191,7 +198,7 @@ services:
     image: ghcr.io/cheqd/did-resolver:latest
     platform: linux/amd64
     ports:
-      - "8081:8080"
+      - "${CHEQD_RESOLVER_PORT}:8080"
     restart: on-failure
     environment:
       - MAINNET_ENDPOINT=grpc.cheqd.network:443,true,5s

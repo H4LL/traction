@@ -1,27 +1,7 @@
 <template>
   <div v-if="showDidRegister">
-    <div v-if="pendingPublicDidTx" class="flex">
-      <div class="flex align-items-center mr-2">
-        {{ $t('common.status') }}
-      </div>
-      <div class="flex align-items-center mr-1">
-        <StatusChip :status="pendingPublicDidTx.state || ''" />
-      </div>
-      <div
-        v-if="pendingPublicDidTx.state === 'transaction_acked'"
-        class="flex align-items-center"
-      >
-        <Button
-          title="Continue Registering Public DID"
-          icon="pi pi-file-export"
-          class="p-button-rounded p-button-icon-only p-button-text"
-          @click="registerPublicDid(true)"
-        />
-      </div>
-    </div>
     <Button
-      v-else
-      title="Register Public DID"
+      title="Create cheqd DID"
       icon="pi pi-file-export"
       class="p-button-rounded p-button-icon-only p-button-text"
       @click="registerPublicDid()"
@@ -30,7 +10,7 @@
 
   <div v-if="showRegistered">
     <i
-      v-tooltip="'Public DID has been registered. See details below.'"
+      v-tooltip="'cheqd DID has been created. See details below.'"
       class="pi pi-check-circle text-green-600"
     ></i>
   </div>
@@ -55,30 +35,22 @@ const toast = useToast();
 
 // State
 const tenantStore = useTenantStore();
-const { endorserConnection, publicDid, pendingPublicDidTx, writeLedger } =
+const { publicDid } =
   storeToRefs(tenantStore);
 
-// Register DID
-const registerPublicDid = async (useTxDid = false) => {
+// Register DID - simplified for cheqd (no transaction handling needed)
+const registerPublicDid = async () => {
   try {
-    await tenantStore.registerPublicDid(
-      useTxDid ? pendingPublicDidTx.value?.meta_data?.did : undefined
-    );
-    toast.success('Public DID registration sent');
+    await tenantStore.registerPublicDid();
+    toast.success('cheqd DID created successfully');
   } catch (error) {
-    toast.error(`Failure while registering DID: ${error}`);
+    toast.error(`Failure while creating DID: ${error}`);
   }
 };
 
-// Details about current ledger from the store
-const currWriteLedger = computed(() => writeLedger?.value?.ledger_id ?? null);
-
-// Show the DID registration button when the write ledger and endorser are set
+// Show the DID registration button when no public DID exists (cheqd doesn't need endorser)
 const showDidRegister = computed(
-  () =>
-    props.ledgerInfo.ledger_id === currWriteLedger.value &&
-    !hasPublicDid.value &&
-    endorserConnection.value?.state === 'active'
+  () => !hasPublicDid.value
 );
 
 // Show the DID complete checkmark if it's sucessfull
@@ -86,7 +58,6 @@ const hasPublicDid = computed(
   () => !!publicDid.value && !!publicDid.value?.did
 );
 const showRegistered = computed(
-  () =>
-    props.ledgerInfo.ledger_id === currWriteLedger.value && hasPublicDid.value
+  () => hasPublicDid.value
 );
 </script>

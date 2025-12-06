@@ -86,7 +86,13 @@ export interface ServerConfig {
       basicmessage_storage: {
         wallet_enabled: boolean;
       };
+      cheqd?: {
+        registrar_url?: string;
+        resolver_url?: string;
+        network?: string;
+      };
     };
+    cheqd_network?: string;
     default_endpoint: string;
     additional_endpoints: Array<any>;
     tails_server_base_url: string;

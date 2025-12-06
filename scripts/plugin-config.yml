@@ -26,7 +26,7 @@ traction_innkeeper:
 basicmessage_storage:
   wallet_enabled: true
 
-cheqd:
-  registrar_url: "http://did-registrar:3000"
-  resolver_url: "http://did-resolver:8080"
-  network: "xanadu"
+# cheqd plugin configuration - top level keys
+registrar_url: "http://did-registrar:9080/1.0/"
+resolver_url: "http://did-resolver:8080/1.0/"
+network: "xanadu"

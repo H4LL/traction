@@ -55,32 +55,12 @@ export const useTenantStore = defineStore('tenant', () => {
     return token.value != null;
   });
   const isIssuer: Ref<boolean> = computed(() => {
-    return (
-      endorserConnection.value?.state === 'active' &&
-      publicDid.value?.did &&
-      (!taa.value?.taa_required || taa.value?.taa_accepted)
-    );
+    // For cheqd DIDs, only need a public DID - no endorser or TAA required
+    return !!publicDid.value?.did;
   });
   const pendingPublicDidTx = computed<TransactionRecordEx | null>(() => {
-    // If they have a wallet DID but no public, check transactions to the endorser for a status
-    let pending = null;
-    const hasPublicDid = !!publicDid.value?.did;
-    if (!hasPublicDid && walletDids.value.length > 0) {
-      walletDids.value.forEach((wDid) => {
-        const pendingTx = transactions.value.find(
-          (tx: TransactionRecordEx) =>
-            tx.signature_request?.[0]?.author_goal_code?.includes(
-              'register_public_did'
-            ) &&
-            tx.meta_data?.did == wDid.did &&
-            tx.connection_id === endorserConnection?.value?.connection_id
-        );
-        if (pendingTx) {
-          pending = pendingTx;
-        }
-      });
-    }
-    return pending;
+    // cheqd DIDs don't use transactions - always return null
+    return null;
   });
 
   // actions
@@ -399,73 +379,30 @@ export const useTenantStore = defineStore('tenant', () => {
       if (!did) {
         // Create a DID
         publicDidRegistrationProgress.value = 'Creating DID';
-        const aRes = await acapyApi.postHttp(API_PATH.WALLET_DID_CREATE, {
-          method: 'sov',
-          options: { key_type: 'ed25519' },
+        const aRes = await acapyApi.postHttp('/did/cheqd/create', {
+          network: (serverConfig.value as ServerConfig)?.config?.plugin_config?.cheqd?.network,  // Get network from server config
+          key_type: 'ed25519'
         });
         if (!aRes.data.result) {
           throw Error('No result in create DID response');
         }
 
-        // Use the did and verkey
+        // Use the did - cheqd DIDs are created and registered immediately
         did = aRes.data.result.did;
-        const verkey = aRes.data.result.verkey;
-        const alias = tenant.value.tenant_name || tenant.value.wallet_id;
-        // Register the DID
-        publicDidRegistrationProgress.value = 'Registering the DID';
-        const bRes = await acapyApi.postHttp(
-          `${API_PATH.TENANT_REGISTER_PUBLIC_DID}?did=${did}&verkey=${verkey}&alias=${alias}`,
-          {}
-        );
-        console.log(bRes);
-        console.log(`posted ${did} on ledger ${writeLedger.value.ledger_id}`);
-
-        // Wait for endorse transaction completion
-        const txnId = bRes.data.txn.transaction_id;
-        await waitForTxnCompletion(txnId);
+        console.log(`Created cheqd DID: ${did}`);
       }
 
-      // Verify DID is posted on correct ledger
-      const cRes = await acapyApi.getHttp(
-        `${API_PATH.TENANT_GET_VERKEY_POSTED_DID}?did=${did}`,
-        {}
-      );
-      publicDidRegistrationProgress.value = 'Verifying DID posted on ledger';
-      if (!cRes.data.verkey) {
-        console.log(`DID ${did} is not posted on ledger`);
-        postedDID = null;
-      } else if (cRes.data && cRes.data.ledger_id) {
-        const posted_did_ledger_id = cRes.data.ledger_id;
-        console.log(
-          `Verified DID ${did} is posted on ledger ${posted_did_ledger_id}`
-        );
-        if (posted_did_ledger_id === writeLedger.value.ledger_id) {
-          postedDID = did;
-        } else {
-          postedDID = null;
-        }
-      } else {
-        postedDID = did;
-      }
-      // Assign the public DID
-      console.log(`calling /wallet/did/public with ${postedDID}`);
+      // Assign the public DID - cheqd DIDs don't need ledger verification
+      console.log(`Assigning public DID: ${did}`);
       publicDidRegistrationProgress.value = 'Assigning the public DID';
       await acapyApi.postHttp(
-        `${API_PATH.WALLET_DID_PUBLIC}?did=${postedDID}`,
+        `${API_PATH.WALLET_DID_PUBLIC}?did=${did}`,
         {}
       );
-      publicDidRegistrationProgress.value = 'Fetching created public DID';
-      // set curr_ledger_id in TenantRecord
-      const payload = {
-        ledger_id: writeLedger.value.ledger_id,
-      };
-      await acapyApi.putHttp(API_PATH.TENANT_CONFIG_SET_LEDGER_ID, payload);
     } catch (err) {
       registrationError = err;
     } finally {
-      getWriteLedger();
       getPublicDid();
-      getTransactions();
       getWalletcDids();
       publicDidRegistrationProgress.value = '';
       loadingIssuance.value = false;
