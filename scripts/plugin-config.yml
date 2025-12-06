@@ -29,4 +29,4 @@ basicmessage_storage:
 cheqd:
   registrar_url: "http://did-registrar:3000"
   resolver_url: "http://did-resolver:8080"
-  network: "cheqd-local"
+  network: "xanadu"
