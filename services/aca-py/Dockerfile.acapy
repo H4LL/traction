@@ -2,6 +2,9 @@ FROM traction:plugins-acapy
 
 USER root
 
+# Install cheqd plugin for did:cheqd support (compatible with ACA-Py 1.3.0)
+RUN pip install git+https://github.com/openwallet-foundation/acapy-plugins@1.3.0#subdirectory=cheqd
+
 ADD https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64 ./jq
 RUN chmod +x ./jq
 COPY ngrok-wait.sh ngrok-wait.sh

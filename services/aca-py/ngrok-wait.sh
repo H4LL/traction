@@ -26,9 +26,12 @@ echo "Starting aca-py agent ..."
 
 
 # ... if you want to echo the aca-py startup command ...
-# set -x
+set -x
 
 exec aca-py start \
+    --wallet-local-did \
+    --no-ledger \
+    --wallet-type askar-anoncreds \
     --inbound-transport http "0.0.0.0" ${TRACTION_ACAPY_HTTP_PORT} \
     --outbound-transport http \
     --endpoint ${ACAPY_ENDPOINT} \
@@ -43,4 +46,5 @@ exec aca-py start \
     --plugin connections \
     --plugin connection_update.v1_0 \
     --plugin rpc.v1_0 \
-    --plugin webvh
+    --plugin webvh \
+    --plugin cheqd

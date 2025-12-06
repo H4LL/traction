@@ -15,17 +15,9 @@ traction_innkeeper:
     wallet_key: change-me
     print_key: true
     print_token: true
-    connect_to_endorser: [
-      {
-        "endorser_alias": "bcovrin-test-endorser",
-        "ledger_id": "bcovrin-test",
-      },
-      {
-        "endorser_alias": "bcovrin-test-endorser-1",
-        "ledger_id": "bcovrin-test-1",
-      }
-    ]
-    create_public_did: ["bcovrin-test", "bcovrin-test-1"]
+    # No endorser connections needed for cheqd (no-ledger mode)
+    connect_to_endorser: []
+    create_public_did: []
   reservation:
     auto_approve: true
     expiry_minutes: 2880
@@ -33,3 +25,8 @@ traction_innkeeper:
 
 basicmessage_storage:
   wallet_enabled: true
+
+cheqd:
+  registrar_url: "http://did-registrar:3000"
+  resolver_url: "http://did-resolver:8080"
+  network: "cheqd-local"

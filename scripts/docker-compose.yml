@@ -6,6 +6,8 @@ services:
       - TRACTION_ACAPY_HTTP_PORT=${TRACTION_ACAPY_HTTP_PORT}
     ports:
       - 4052:4040
+    networks:
+      - traction-network
     command: http traction-agent:${TRACTION_ACAPY_HTTP_PORT} --log stdout
 
   traction-acapy-image-builder:
@@ -16,6 +18,8 @@ services:
     image: traction:plugins-acapy
     entrypoint: "/bin/bash"
     tty: true
+    networks:
+      - traction-network
 
   traction-agent:
     pull_policy: missing
@@ -28,9 +32,12 @@ services:
         condition: service_started
       traction-db:
         condition: service_healthy
+      did-registrar:
+        condition: service_started
     environment:
       - TRACTION_ENV=${TRACTION_ENV}
       - NGROK_NAME=ngrok-traction-agent
+      - ACAPY_ENDPOINT=${ACAPY_ENDPOINT}
       - TRACTION_ACAPY_HTTP_PORT=${TRACTION_ACAPY_HTTP_PORT}
       - TRACTION_ACAPY_ADMIN_PORT=${TRACTION_ACAPY_ADMIN_PORT}
       - TRACTION_ACAPY_WALLET_NAME=${TRACTION_ACAPY_WALLET_NAME}
@@ -45,8 +52,6 @@ services:
       - ACAPY_AUTO_PROVISION=${ACAPY_AUTO_PROVISION}
       - ACAPY_WALLET_TYPE=${ACAPY_WALLET_TYPE}
       - ACAPY_WALLET_STORAGE_TYPE=${ACAPY_WALLET_STORAGE_TYPE}
-      - ACAPY_GENESIS_TRANSACTIONS_LIST=${ACAPY_GENESIS_TRANSACTIONS_LIST}
-      - ACAPY_READ_ONLY_LEDGER=${ACAPY_READ_ONLY_LEDGER}
       - ACAPY_LABEL=${ACAPY_LABEL}
       - ACAPY_ADMIN_API_KEY=${ACAPY_ADMIN_API_KEY}
       - ACAPY_ADMIN_INSECURE_MODE=${ACAPY_ADMIN_INSECURE_MODE}
@@ -74,22 +79,18 @@ services:
       - ACAPY_AUTO_STORE_CREDENTIAL=${ACAPY_AUTO_STORE_CREDENTIAL}
       - ACAPY_NOTIFY_REVOCATION=${ACAPY_NOTIFY_REVOCATION}
       - ACAPY_MONITOR_REVOCATION_NOTIFICATION=${ACAPY_MONITOR_REVOCATION_NOTIFICATION}
-      - ACAPY_ENDORSER_ROLE=${ACAPY_ENDORSER_ROLE}
-      - ACAPY_AUTO_REQUEST_ENDORSEMENT=${ACAPY_AUTO_REQUEST_ENDORSEMENT}
-      - ACAPY_AUTO_WRITE_TRANSACTIONS=${ACAPY_AUTO_WRITE_TRANSACTIONS}
-      - ACAPY_AUTO_PROMOTE_AUTHOR_DID=${ACAPY_AUTO_PROMOTE_AUTHOR_DID}
       - ACAPY_CREATE_REVOCATION_TRANSACTIONS=${ACAPY_CREATE_REVOCATION_TRANSACTIONS}
       - ACAPY_DEBUG_WEBHOOKS=${ACAPY_DEBUG_WEBHOOKS}
       - ACAPY_PLUGIN_CONFIG=${ACAPY_PLUGIN_CONFIG}
       - RUST_LOG=error
-    ports:
-      - ${TRACTION_ACAPY_ADMIN_PORT}:${TRACTION_ACAPY_ADMIN_PORT}
-      - ${TRACTION_ACAPY_HTTP_PORT}:${TRACTION_ACAPY_HTTP_PORT}
+    # Ports removed - access via tenant-proxy only
     entrypoint: /bin/bash
     command: ["-c", "sleep 5; ./ngrok-wait.sh"]
     volumes:
       - "./plugin-config.yml:/home/aries/plugin-config.yml"
-      - "./ledgers.yml:/home/aries/ledgers.yml"
+      - "./empty-genesis.json:/home/aries/empty-genesis.json"
+    networks:
+      - traction-network
     extra_hosts:
       - host.docker.internal:host-gateway
 
@@ -99,8 +100,7 @@ services:
       - POSTGRES_USER=${POSTGRESQL_USER}
       - POSTGRES_PASSWORD=${POSTGRESQL_PASSWORD}
       - POSTGRES_DB=${POSTGRESQL_DB}
-    ports:
-      - ${POSTGRESQL_PORT}:5432
+    # Port removed - internal access only via traction-network
     volumes:
       - traction-wallet:/var/lib/postgresql/data
     healthcheck:
@@ -108,6 +108,8 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    networks:
+      - traction-network
     extra_hosts:
       - host.docker.internal:host-gateway
 
@@ -120,6 +122,8 @@ services:
     depends_on:
       tenant-proxy:
         condition: service_started
+    networks:
+      - traction-network
     environment:
       - SERVER_TRACTION_URL=${SERVER_TRACTION_URL}
       - SERVER_LOKI_URL=${SERVER_LOKI_URL}
@@ -155,106 +159,48 @@ services:
     depends_on:
       traction-agent:
         condition: service_started
+      did-registrar:
+        condition: service_started
     restart: unless-stopped
     environment:
       - ACAPY_ADMIN_URL=${TRACTION_ACAPY_ADMIN_URL}
       - ACAPY_ADMIN_URL_API_KEY=${ACAPY_ADMIN_API_KEY}
     ports:
       - ${TENANT_PROXY_PORT}:8080
+    networks:
+      - traction-network
     extra_hosts:
       - host.docker.internal:host-gateway
 
-  endorser-agent:
-    image: ghcr.io/openwallet-foundation/acapy-agent:py3.12-1.4.0
-    depends_on:
-      endorser-db:
-        condition: service_healthy
+  # cheqd DID Services
+  did-registrar:
+    image: ghcr.io/cheqd/did-registrar:production-latest
+    platform: linux/amd64
     ports:
-      - ${ACAPY_ENDORSER_ADMIN_PORT}:${ACAPY_ENDORSER_ADMIN_PORT}
-      - ${ACAPY_ENDORSER_HTTP_PORT}:${ACAPY_ENDORSER_HTTP_PORT}
-    entrypoint: /bin/bash
-    command: [
-        "-c",
-        "sleep 5;
-        aca-py start \
-        --auto-provision
-        --arg-file endorser-acapy-args.yml \
-        --inbound-transport http '0.0.0.0' ${ACAPY_ENDORSER_HTTP_PORT} \
-        --genesis-url '${ACAPY_GENESIS_URL}' \
-        --endpoint ${ACAPY_ENDORSER_ENDPOINT} \
-        --wallet-name '${ENDORSER_ACAPY_WALLET_DATABASE}' \
-        --wallet-key '${ENDORSER_ACAPY_WALLET_ENCRYPTION_KEY}' \
-        --wallet-type '${ENDORSER_ACAPY_WALLET_TYPE}' \
-        --wallet-storage-type '${ENDORSER_ACAPY_WALLET_STORAGE_TYPE}' \
-        --wallet-storage-config '{\"url\":\"${ENDORSER_POSTGRESQL_HOST}:5432\",\"max_connections\":5}' \
-        --wallet-storage-creds '{\"account\":\"${POSTGRESQL_USER}\",\"password\":\"${POSTGRESQL_PASSWORD}\",\"admin_account\":\"${POSTGRESQL_USER}\",\"admin_password\":\"${POSTGRESQL_PASSWORD}\"}' \
-        --wallet-name endorser-wallet  \
-        --seed '${ACAPY_ENDORSER_SEED}' \
-        --admin '0.0.0.0' ${ACAPY_ENDORSER_ADMIN_PORT} \
-        --label '${ENDORSER_AGENT_NAME}' \
-        ${ENDORSER_ACAPY_ADMIN_CONFIG} \
-        ",
-      ]
+      - "9089:3000"
+    restart: on-failure
     environment:
-      - RUST_LOG=error
-    volumes:
-      - "./endorser-acapy-args.yml:/home/aries/endorser-acapy-args.yml"
+      - FEE_PAYER_TESTNET_MNEMONIC=${FEE_PAYER_TESTNET_MNEMONIC:-"abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon art"}
+      - FEE_PAYER_MAINNET_MNEMONIC=${FEE_PAYER_MAINNET_MNEMONIC:-"abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon art"}
+    networks:
+      - traction-network
     extra_hosts:
       - host.docker.internal:host-gateway
 
-  endorser-agent-1:
-    image: ghcr.io/openwallet-foundation/acapy-agent:py3.12-1.4.0
-    depends_on:
-      endorser-db:
-        condition: service_healthy
+  did-resolver:
+    image: ghcr.io/cheqd/did-resolver:latest
+    platform: linux/amd64
     ports:
-      - ${ACAPY_ENDORSER_1_ADMIN_PORT}:${ACAPY_ENDORSER_1_ADMIN_PORT}
-      - ${ACAPY_ENDORSER_1_HTTP_PORT}:${ACAPY_ENDORSER_1_HTTP_PORT}
-    entrypoint: /bin/bash
-    command: [
-        "-c",
-        "sleep 5;
-        aca-py start \
-        --auto-provision
-        --arg-file endorser-acapy-args.yml \
-        --inbound-transport http '0.0.0.0' ${ACAPY_ENDORSER_1_HTTP_PORT} \
-        --genesis-url '${ACAPY_GENESIS_URL_1}' \
-        --endpoint ${ACAPY_ENDORSER_1_ENDPOINT} \
-        --wallet-name '${ENDORSER_1_ACAPY_WALLET_DATABASE}' \
-        --wallet-key '${ENDORSER_ACAPY_WALLET_ENCRYPTION_KEY}' \
-        --wallet-type '${ENDORSER_ACAPY_WALLET_TYPE}' \
-        --wallet-storage-type '${ENDORSER_ACAPY_WALLET_STORAGE_TYPE}' \
-        --wallet-storage-config '{\"url\":\"${ENDORSER_POSTGRESQL_HOST}:5432\",\"max_connections\":5}' \
-        --wallet-storage-creds '{\"account\":\"${POSTGRESQL_USER}\",\"password\":\"${POSTGRESQL_PASSWORD}\",\"admin_account\":\"${POSTGRESQL_USER}\",\"admin_password\":\"${POSTGRESQL_PASSWORD}\"}' \
-        --wallet-name endorser-wallet-1  \
-        --seed '${ACAPY_ENDORSER_SEED_1}' \
-        --admin '0.0.0.0' ${ACAPY_ENDORSER_1_ADMIN_PORT} \
-        --label '${ENDORSER_AGENT_NAME}' \
-        ${ENDORSER_ACAPY_ADMIN_CONFIG} \
-        ",
-      ]
+      - "8081:8080"
+    restart: on-failure
     environment:
-      - RUST_LOG=error
-    volumes:
-      - "./endorser-acapy-args.yml:/home/aries/endorser-acapy-args.yml"
-    extra_hosts:
-      - host.docker.internal:host-gateway
-
-  endorser-db:
-    image: "postgres:15"
-    environment:
-      - POSTGRES_USER=${POSTGRESQL_USER}
-      - POSTGRES_PASSWORD=${POSTGRESQL_PASSWORD}
-      - POSTGRES_DB=${POSTGRESQL_DB}
-    ports:
-      - ${ENDORSER_POSTGRESQL_PORT}:5432
-    volumes:
-      - endorser-wallet:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+      - MAINNET_ENDPOINT=grpc.cheqd.network:443,true,5s
+      - TESTNET_ENDPOINT=grpc.cheqd.network:443,true,5s  
+      - LOG_LEVEL=info
+      - RESOLVER_LISTENER=0.0.0.0:8080
+      - ENABLE_FALLBACK_ENDPOINTS=false
+    networks:
+      - traction-network
     extra_hosts:
       - host.docker.internal:host-gateway
 
@@ -263,8 +209,14 @@ services:
     ports:
       - "1080:1080"
       - "1025:1025"
+    networks:
+      - traction-network
 
 volumes:
   traction-wallet:
-  endorser-wallet:
-  endorser-wallet-1:
+  # Removed endorser volumes for cheqd integration
+
+networks:
+  traction-network:
+    driver: bridge
+    name: traction-network
